@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divya — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cagliostro&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <!-- Custom cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- Splash -->
+    <div id="splash-screen" class="splash-screen">
+        <span class="splash-bg-word">PORTFOLIO</span>
+        <div class="splash-inner">
+            <span class="splash-tag">Interactive Portfolio</span>
+            <div class="splash-content">
+                <h1>Hi, I'm <span>Divya.</span></h1>
+            </div>
+            <div class="splash-divider"></div>
+            <p class="splash-instructions">
+                Click on objects to learn more about me.
+            </p>
+            <p class="splash-continue">click anywhere to enter</p>
+        </div>
+    </div>
+
+    <!-- Scene -->
+    <div class="experience">
+        <canvas id="experience-canvas"></canvas>
+
+        <!-- Interaction guide top-right -->
+        <div id="interaction-guide">
+            <p>Click to explore</p>
+            <ul>
+                <li>Laptop keyboard -> About me</li>
+                <li>Sticky notes -> Skills</li>
+                <li>Trophies -> Achievements</li>
+                <li>Drawer -> Projects</li>
+                <li>Phone -> Contact</li>
+            </ul>
+            <p class="development-note">Other pop ups and shaders are still under development</p>
+        </div>
+
+        <!-- Corner name badge bottom-left -->
+        <div id="corner-badge">
+            <div class="badge-name">Divya Darshini A</div>
+            <div class="badge-role"><span class="badge-dot"></span>CS Engineer</div>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@v0.149.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.149.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="./main.js"></script>
+
+    <!-- Custom cursor script -->
+    <script>
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursor-ring');
+        let ringX = 0, ringY = 0;
+        let curX = 0, curY = 0;
+
+        document.addEventListener('mousemove', e => {
+            curX = e.clientX; curY = e.clientY;
+            cursor.style.left = curX + 'px';
+            cursor.style.top  = curY + 'px';
+        });
+
+        // ring lags behind for smooth trailing effect
+        function animateRing() {
+            ringX += (curX - ringX) * 0.12;
+            ringY += (curY - ringY) * 0.12;
+            ring.style.left = ringX + 'px';
+            ring.style.top  = ringY + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+
+        // hover state when over clickable things
+        document.addEventListener('mouseover', e => {
+            if (e.target.closest('button, a, #interaction-guide, #corner-badge')) {
+                cursor.classList.add('hovering');
+            }
+        });
+        document.addEventListener('mouseout', e => {
+            if (e.target.closest('button, a, #interaction-guide, #corner-badge')) {
+                cursor.classList.remove('hovering');
+            }
+        });
+    </script>
+</body>
+</html>
